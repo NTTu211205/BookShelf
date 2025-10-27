@@ -122,7 +122,7 @@
                             android:layout_marginEnd="100dp"
                             android:rotation="5"
                             android:scaleType="centerCrop"
-                            android:src="@drawable/ic_library_24"
+                            android:src="@drawable/literature_3"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
@@ -135,7 +135,7 @@
                             android:layout_marginEnd="68dp"
                             android:rotation="0"
                             android:scaleType="centerCrop"
-                            android:src="@drawable/ic_search_24"
+                            android:src="@drawable/literature_2"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
@@ -148,7 +148,7 @@
                             android:layout_marginEnd="40dp"
                             android:rotation="-5"
                             android:scaleType="centerCrop"
-                            android:src="@drawable/ic_store_24"
+                            android:src="@drawable/novels_1"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
@@ -193,7 +193,7 @@
                             android:layout_marginEnd="100dp"
                             android:rotation="5"
                             android:scaleType="centerCrop"
-                            android:src="@drawable/ic_library_24"
+                            android:src="@drawable/nonfiction_1"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
@@ -206,7 +206,7 @@
                             android:layout_marginEnd="68dp"
                             android:rotation="0"
                             android:scaleType="centerCrop"
-                            android:src="@drawable/ic_search_24"
+                            android:src="@drawable/nonfiction_2"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
@@ -219,7 +219,7 @@
                             android:layout_marginEnd="40dp"
                             android:rotation="-5"
                             android:scaleType="centerCrop"
-                            android:src="@drawable/ic_store_24"
+                            android:src="@drawable/nonfiction_3"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
@@ -255,9 +255,10 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerView_bestsellers"
                     android:layout_width="match_parent"
-                    android:layout_height="220dp" android:clipToPadding="false"
+                    android:layout_height="wrap_content"
+                    android:clipToPadding="false"
                     android:orientation="horizontal"
-                    android:paddingTop="16dp"/>
+                    android:paddingTop="16dp" />
             </LinearLayout>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

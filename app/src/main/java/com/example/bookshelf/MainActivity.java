@@ -2,6 +2,7 @@ package com.example.bookshelf;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,9 +13,16 @@ import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.bookshelf.adapters.BookAPiAdapter;
 import com.example.bookshelf.adapters.BookAdapter;
 import com.example.bookshelf.adapters.ContinueAdapter;
+import com.example.bookshelf.api.ApiClient;
+import com.example.bookshelf.api.ApiService;
+import com.example.bookshelf.api.models.BookInfo;
+import com.example.bookshelf.api.models.ImageLinks;
+import com.example.bookshelf.api.response.BookApiResponse;
 import com.example.bookshelf.models.Book;
+import com.example.bookshelf.api.models.BookAPI;
 import com.example.bookshelf.models.ItemContinueReading;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -22,11 +30,18 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class MainActivity extends AppCompatActivity {
 
     private RecyclerView recyclerContinue, recyclerDiscover, recyclerBestSeller;
     private NestedScrollView scrollViewHome;
     private BottomNavigationView bottomNavigationView;
+
+    private final ApiService api = ApiClient.getClient().create(ApiService.class);
+    private final String PICKS = "nonfiction";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,9 +61,34 @@ public class MainActivity extends AppCompatActivity {
         recyclerContinue = findViewById(R.id.recyclerView_continueReading);
         recyclerBestSeller = findViewById(R.id.recyclerView_bestsellers);
 
+        //------------------------------------------------------
+        Call<BookApiResponse> call = api.getBooksForCategoryName("subject:"+PICKS);
+        call.enqueue(new Callback<BookApiResponse>() {
+            @Override
+            public void onResponse(Call<BookApiResponse> call, Response<BookApiResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    BookApiResponse books = response.body();
+                    BookAPiAdapter adapter = new BookAPiAdapter(books.getBooks(), MainActivity.this);
+                    recyclerBestSeller.setAdapter(adapter);
+                    recyclerBestSeller.setLayoutManager(new LinearLayoutManager(MainActivity.this, LinearLayoutManager.HORIZONTAL, false));
+                }
+                else {
+                    Log.d("Show Picks: ", "Error");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<BookApiResponse> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+
+
+
+
+        //-------------------------------------------------------
         setupContinueRecycler(recyclerContinue, getContinueReadingBooks());
 //        setupRecycler(recyclerDiscover, getDiscoverBooks());
-        setupRecycler(recyclerBestSeller, getBestSellerBooks());
 
         bottomNavigationView = findViewById(R.id.bottom_navigation_view);
         bottomNavigationView.setOnItemSelectedListener(item -> {
@@ -84,10 +124,10 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setAdapter(new ContinueAdapter(this, items));
     }
 
-    private void setupRecycler(RecyclerView recyclerView, List<Book> books) {
-        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        recyclerView.setAdapter(new BookAdapter(this, books));
-    }
+//    private void setupRecycler(RecyclerView recyclerView, List<Book> books) {
+//        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+//        recyclerView.setAdapter(new BookAdapter(this, books));
+//    }
 
 
     private List<ItemContinueReading> getContinueReadingBooks() {
@@ -106,11 +146,13 @@ public class MainActivity extends AppCompatActivity {
 //        return list;
 //    }
 
-    private List<Book> getBestSellerBooks() {
-        List<Book> list = new ArrayList<>();
-        list.add(new Book(R.drawable.ic_home_24, "Top 1: 100 Năm Cô Đơn", "Gabriel Márquez"));
-        list.add(new Book(R.drawable.ic_library_24, "Top 2: Đắc Nhân Tâm", "Dale Carnegie"));
-        list.add(new Book(R.drawable.ic_store_24, "Top 3: Nhà Giả Kim", "Paulo Coelho"));
-        return list;
-    }
+//    private List<Book> getBestSellerBooks() {
+//
+//
+//        List<Book> list = new ArrayList<>();
+//        list.add(new Book(R.drawable.ic_home_24, "Top 1: 100 Năm Cô Đơn", "Gabriel Márquez"));
+//        list.add(new Book(R.drawable.ic_library_24, "Top 2: Đắc Nhân Tâm", "Dale Carnegie"));
+//        list.add(new Book(R.drawable.ic_store_24, "Top 3: Nhà Giả Kim", "Paulo Coelho"));
+//        return list;
+//    }
 }

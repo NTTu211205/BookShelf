@@ -8,11 +8,11 @@
 
     <ImageView
         android:id="@+id/imageView_book"
-        android:layout_width="match_parent"
-        android:layout_height="160dp"
+        android:layout_width="100dp"
+        android:layout_height="150dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/ic_store_24"
-        app:tint="@android:color/white"/>
+        android:src="@drawable/ic_store_24" />
+
     <TextView
         android:id="@+id/textView_title"
         android:layout_width="match_parent"
