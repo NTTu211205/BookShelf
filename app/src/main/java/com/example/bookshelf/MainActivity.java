@@ -62,26 +62,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerBestSeller = findViewById(R.id.recyclerView_bestsellers);
 
         //------------------------------------------------------
-        Call<BookApiResponse> call = api.getBooksForCategoryName("subject:"+PICKS);
-        call.enqueue(new Callback<BookApiResponse>() {
-            @Override
-            public void onResponse(Call<BookApiResponse> call, Response<BookApiResponse> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    BookApiResponse books = response.body();
-                    BookAPiAdapter adapter = new BookAPiAdapter(books.getBooks(), MainActivity.this);
-                    recyclerBestSeller.setAdapter(adapter);
-                    recyclerBestSeller.setLayoutManager(new LinearLayoutManager(MainActivity.this, LinearLayoutManager.HORIZONTAL, false));
-                }
-                else {
-                    Log.d("Show Picks: ", "Error");
-                }
-            }
-
-            @Override
-            public void onFailure(Call<BookApiResponse> call, Throwable t) {
-                t.printStackTrace();
-            }
-        });
+        loadRecyclerViewBestSeller();
 
 
 
@@ -117,6 +98,29 @@ public class MainActivity extends AppCompatActivity {
         });
 
         bottomNavigationView.setSelectedItemId(R.id.nav_home);
+    }
+
+    private void loadRecyclerViewBestSeller() {
+        Call<BookApiResponse> call = api.getBooksForCategoryName("subject:" + PICKS);
+        call.enqueue(new Callback<BookApiResponse>() {
+            @Override
+            public void onResponse(Call<BookApiResponse> call, Response<BookApiResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    BookApiResponse books = response.body();
+                    BookAPiAdapter adapter = new BookAPiAdapter(books.getBooks(), MainActivity.this);
+                    recyclerBestSeller.setAdapter(adapter);
+                    recyclerBestSeller.setLayoutManager(new LinearLayoutManager(MainActivity.this, LinearLayoutManager.HORIZONTAL, false));
+                }
+                else {
+                    Log.d("Show Picks: ", "Error");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<BookApiResponse> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
     }
 
     private void setupContinueRecycler(RecyclerView recyclerView, List<ItemContinueReading> items) {
