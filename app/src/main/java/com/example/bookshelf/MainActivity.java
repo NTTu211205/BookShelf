@@ -67,12 +67,12 @@ public class MainActivity extends AppCompatActivity {
                 finish();
                 return true;
             }
-//            else if(itemId == R.id.nav_search){
-//                Intent intent = new Intent(LibraryActivity.this, SearchActivity.class);
-//                startActivity(intent);
-//                finish();
-//                return true;
-//            }
+            else if(itemId == R.id.nav_search){
+                Intent intent = new Intent(MainActivity.this, SearchActivity.class);
+                startActivity(intent);
+                finish();
+                return true;
+            }
             return false;
         });
 

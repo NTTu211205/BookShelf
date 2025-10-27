@@ -28,7 +28,7 @@ public class ContinueAdapter extends RecyclerView.Adapter<ContinueAdapter.Contin
     @NonNull
     @Override
     public ContinueAdapter.ContinueViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view1 = LayoutInflater.from(context).inflate(R.layout.continue_book_reading_items, parent, false);
+        View view1 = LayoutInflater.from(context).inflate(R.layout.nearest_saving_items, parent, false);
         return new ContinueViewHolder(view1);
     }
 
