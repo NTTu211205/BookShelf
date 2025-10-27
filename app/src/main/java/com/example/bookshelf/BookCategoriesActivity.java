@@ -55,7 +55,14 @@ public class BookCategoriesActivity extends AppCompatActivity {
                 startActivity(intent);
                 finish();
                 return true;
-            } else return itemId == R.id.nav_bookstore;
+            }
+            else if(itemId == R.id.nav_search){
+                Intent intent = new Intent(BookCategoriesActivity.this, SearchActivity.class);
+                startActivity(intent);
+                finish();
+                return true;
+            }
+            else return itemId == R.id.nav_bookstore;
         });
 
 
