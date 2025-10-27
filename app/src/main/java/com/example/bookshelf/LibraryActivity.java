@@ -49,12 +49,12 @@ public class LibraryActivity extends AppCompatActivity {
                 finish();
                 return true;
             }
-//            else if(itemId == R.id.nav_search){
-//                Intent intent = new Intent(LibraryActivity.this, SearchActivity.class);
-//                startActivity(intent);
-//                finish();
-//                return true;
-//            }
+            else if(itemId == R.id.nav_search){
+                Intent intent = new Intent(LibraryActivity.this, SearchActivity.class);
+                startActivity(intent);
+                finish();
+                return true;
+            }
             else return itemId == R.id.nav_library;
         });
         RecyclerView recyclerView = findViewById(R.id.recycler_library);
