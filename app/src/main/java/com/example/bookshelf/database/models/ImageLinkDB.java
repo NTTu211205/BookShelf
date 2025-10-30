@@ -15,7 +15,7 @@ public class ImageLinkDB {
     @ColumnInfo(name="bookInfoId")
     private String bookInfoId;
     @ColumnInfo(name="smallThumbnail")
-    private String smallThumnail;
+    private String smallThumbnail;
     @ColumnInfo(name="thumbnail")
     private String thumbnail;
     @ColumnInfo(name="small")
@@ -32,7 +32,7 @@ public class ImageLinkDB {
     // Constructor
     public ImageLinkDB(String bookInfoId, String smallThumbnail, String thumbnail, String small, String medium, String large, String extraLarge) {
         this.bookInfoId = bookInfoId;
-        this.smallThumnail = smallThumbnail;
+        this.smallThumbnail = smallThumbnail;
         this.thumbnail = thumbnail;
         this.small = small;
         this.medium = medium;
@@ -59,20 +59,20 @@ public class ImageLinkDB {
         this.bookInfoId = bookInfoId;
     }
 
-    public String getSmallThumnail() {
-        return smallThumnail;
+    public String getSmallThumbnail() {
+        return smallThumbnail;
     }
 
-    public void setSmallThumnail(String smallThumnail) {
-        this.smallThumnail = smallThumnail;
+    public void setSmallThumbnail(String smallThumbnail) {
+        this.smallThumbnail = smallThumbnail;
     }
 
-    public String getThumnail() {
+    public String getThumbnail() {
         return thumbnail;
     }
 
-    public void setThumnail(String thumnail) {
-        this.thumbnail = thumnail;
+    public void setThumbnail(String thumbnail) {
+        this.thumbnail = thumbnail;
     }
 
     public String getSmall() {
