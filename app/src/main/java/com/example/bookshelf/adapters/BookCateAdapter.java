@@ -5,7 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView; // Cần thêm import này
+import android.widget.TextView; // Đảm bảo đã import
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,16 +19,24 @@ public class BookCateAdapter extends RecyclerView.Adapter<BookCateAdapter.BookCa
 
     private Context context;
     private List<BookCateItem> bookList;
+    private OnCategoryClickListener listener; // THÊM LẠI: Listener để xử lý click
 
-    public BookCateAdapter(Context context, List<BookCateItem> bookList) {
+    // --- 1. THÊM LẠI: Interface để gửi sự kiện click ---
+    public interface OnCategoryClickListener {
+        void onCategoryClick(BookCateItem item);
+    }
+
+    // --- 2. SỬA: Cập nhật constructor để nhận listener ---
+    public BookCateAdapter(Context context, List<BookCateItem> bookList, OnCategoryClickListener listener) {
         this.context = context;
         this.bookList = bookList;
+        this.listener = listener; // Gán listener
     }
 
     @NonNull
     @Override
     public BookCateViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        // CẬP NHẬT: Dùng R.layout.items_featured_col để match với book_cate_page.xml
+        // Dùng layout R.layout.items_featured_col (Giống code của bạn)
         View view = LayoutInflater.from(context).inflate(R.layout.items_featured_col, parent, false);
         return new BookCateViewHolder(view);
     }
@@ -37,10 +45,17 @@ public class BookCateAdapter extends RecyclerView.Adapter<BookCateAdapter.BookCa
     public void onBindViewHolder(@NonNull BookCateViewHolder holder, int position) {
         BookCateItem book = bookList.get(position);
 
+        // Dùng các hàm model của bạn: getImageResId() và getType()
         holder.coverImageView.setImageResource(book.getImageResId());
-        // CẬP NHẬT: Hiển thị tiêu đề chính (lấy từ trường 'type')
         holder.textTitle.setText(book.getType());
-        // textLabel sẽ giữ nguyên text mặc định trong XML là "FEATURED COLLECTION"
+        // holder.textLabel sẽ giữ nguyên "FEATURED COLLECTION" từ XML
+
+        // --- 3. THÊM LẠI: Gán sự kiện click cho item ---
+        holder.itemView.setOnClickListener(v -> {
+            if (listener != null) {
+                listener.onCategoryClick(book);
+            }
+        });
     }
 
     @Override
@@ -48,13 +63,13 @@ public class BookCateAdapter extends RecyclerView.Adapter<BookCateAdapter.BookCa
         return bookList.size();
     }
 
+    // ViewHolder của bạn (Giữ nguyên)
     public class BookCateViewHolder extends RecyclerView.ViewHolder {
         ImageView coverImageView;
-        TextView textTitle, textLabel; // Đã thêm TextViews cho Title và Label
+        TextView textTitle, textLabel;
 
         public BookCateViewHolder(@NonNull View itemView) {
             super(itemView);
-            // CẬP NHẬT ID: Ánh xạ tới ID trong items_featured_col.xml
             coverImageView = itemView.findViewById(R.id.imageView_featured_books);
             textTitle = itemView.findViewById(R.id.textView_featured_title);
             textLabel = itemView.findViewById(R.id.textView_featured_label);
