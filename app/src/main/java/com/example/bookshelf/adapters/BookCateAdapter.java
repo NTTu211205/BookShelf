@@ -19,18 +19,23 @@ public class BookCateAdapter extends RecyclerView.Adapter<BookCateAdapter.BookCa
 
     private Context context;
     private List<BookCateItem> bookList;
-    private OnCategoryClickListener listener; // THÊM LẠI: Listener để xử lý click
+//    private OnCategoryClickListener listener; // THÊM LẠI: Listener để xử lý click
 
     // --- 1. THÊM LẠI: Interface để gửi sự kiện click ---
-    public interface OnCategoryClickListener {
-        void onCategoryClick(BookCateItem item);
-    }
+//    public interface OnCategoryClickListener {
+//        void onCategoryClick(BookCateItem item);
+//    }
 
     // --- 2. SỬA: Cập nhật constructor để nhận listener ---
-    public BookCateAdapter(Context context, List<BookCateItem> bookList, OnCategoryClickListener listener) {
+//    public BookCateAdapter(Context context, List<BookCateItem> bookList, OnCategoryClickListener listener) {
+//        this.context = context;
+//        this.bookList = bookList;
+////        this.listener = listener; // Gán listener
+//    }
+
+    public BookCateAdapter(Context context, List<BookCateItem> bookList) {
         this.context = context;
         this.bookList = bookList;
-        this.listener = listener; // Gán listener
     }
 
     @NonNull
@@ -51,11 +56,11 @@ public class BookCateAdapter extends RecyclerView.Adapter<BookCateAdapter.BookCa
         // holder.textLabel sẽ giữ nguyên "FEATURED COLLECTION" từ XML
 
         // --- 3. THÊM LẠI: Gán sự kiện click cho item ---
-        holder.itemView.setOnClickListener(v -> {
-            if (listener != null) {
-                listener.onCategoryClick(book);
-            }
-        });
+//        holder.itemView.setOnClickListener(v -> {
+//            if (listener != null) {
+//                listener.onCategoryClick(book);
+//            }
+//        });
     }
 
     @Override
