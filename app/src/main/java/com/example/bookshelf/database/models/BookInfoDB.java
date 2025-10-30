@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey;
 
 import com.example.bookshelf.api.models.ImageLinks;
 
-@Entity
+@Entity(tableName = "BookInfo")
 public class BookInfoDB {
     @PrimaryKey(autoGenerate = true)
     private long bookInfoId;
