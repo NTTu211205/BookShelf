@@ -3,6 +3,8 @@ package com.example.bookshelf;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View; // Thêm import
+import android.widget.TextView; // Thêm import
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,13 +15,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.bookshelf.adapters.BookAPiAdapter;
-import com.example.bookshelf.adapters.BookAdapter;
-import com.example.bookshelf.adapters.BookCateAdapter;
+import com.example.bookshelf.adapters.BookCateAdapter; // Import adapter
 import com.example.bookshelf.api.ApiClient;
 import com.example.bookshelf.api.ApiService;
-import com.example.bookshelf.api.models.BookAPI;
 import com.example.bookshelf.api.response.BookApiResponse;
-import com.example.bookshelf.models.Book;
 import com.example.bookshelf.models.BookCateItem;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -30,22 +29,22 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class BookCategoriesActivity extends AppCompatActivity {
+public class BookCategoriesActivity extends AppCompatActivity implements BookCateAdapter.OnCategoryClickListener {
+
     private final String NOVELS = "subject:novels";
     private final String CHILD_AND_TEENAGER = "subject:child";
     private final String NON_FICTION = "subject:nonfiction";
     private final String SHORT_STORIES = "subject:shortstories";
     private final String POEMS = "subject:poems";
-    private final ApiService api = ApiClient.getClient().create(ApiService.class);
+
 
     private RecyclerView recyclerFeatured;
-    private RecyclerView recyclerNovel, recyclerChild, recyclerNonFic, recyclerShortStories, recyclerPoems;
+    private TextView tvNovel, tvChild, tvNonFic, tvShortStories, tvPoems;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-
         setContentView(R.layout.book_cate_page);
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
@@ -54,101 +53,78 @@ public class BookCategoriesActivity extends AppCompatActivity {
             return insets;
         });
 
-        // --- Code Bottom Navigation (Giữ nguyên) ---
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation_view);
         bottomNavigationView.setSelectedItemId(R.id.nav_bookstore);
         bottomNavigationView.setOnItemSelectedListener(item -> {
             int itemId = item.getItemId();
-
             if (itemId == R.id.nav_home) {
-                Intent intent = new Intent(BookCategoriesActivity.this, MainActivity.class);
-                startActivity(intent);
+                startActivity(new Intent(BookCategoriesActivity.this, MainActivity.class));
                 finish();
                 return true;
             } else if (itemId == R.id.nav_library) {
-                Intent intent = new Intent(BookCategoriesActivity.this, LibraryActivity.class);
-                startActivity(intent);
+                startActivity(new Intent(BookCategoriesActivity.this, LibraryActivity.class));
+                finish();
+                return true;
+            } else if(itemId == R.id.nav_search) {
+                startActivity(new Intent(BookCategoriesActivity.this, SearchActivity.class));
                 finish();
                 return true;
             }
-            else if(itemId == R.id.nav_search){
-                Intent intent = new Intent(BookCategoriesActivity.this, SearchActivity.class);
-                startActivity(intent);
-                finish();
-                return true;
-            }
-            else return itemId == R.id.nav_bookstore;
+            return itemId == R.id.nav_bookstore;
         });
 
+        tvNovel = findViewById(R.id.rcNovelAndLiterature);
+        tvChild = findViewById(R.id.recyclerView_child);
+        tvNonFic = findViewById(R.id.tv_nonFic);
+        tvShortStories = findViewById(R.id.tv_ShortStory);
+        tvPoems = findViewById(R.id.tv_poems);
+
+//        tvNovel.setOnClickListener(v -> openCategoryList("Tiểu thuyết", NOVELS));
+//        tvChild.setOnClickListener(v -> openCategoryList("Thiếu nhi", CHILD_AND_TEENAGER));
+//        tvNonFic.setOnClickListener(v -> openCategoryList("Phi hư cấu", NON_FICTION));
+//        tvShortStories.setOnClickListener(v -> openCategoryList("Truyện ngắn", SHORT_STORIES));
+//        tvPoems.setOnClickListener(v -> openCategoryList("Thơ", POEMS));
 
         recyclerFeatured = findViewById(R.id.recyclerView_featured);
-        recyclerNovel = findViewById(R.id.rcNovelAndLiterature);
-        recyclerChild = findViewById(R.id.recyclerView_child);
-        recyclerNonFic = findViewById(R.id.recycler_nonFic);
-        recyclerShortStories = findViewById(R.id.recycler_shortStories);
-        recyclerPoems = findViewById(R.id.recycler_poems);
-
-
-        // ----- Setup cho Featured Collection -----
         recyclerFeatured.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        BookCateAdapter featuredAdapter = new BookCateAdapter(this, getFeaturedItems());
+        BookCateAdapter featuredAdapter = new BookCateAdapter(this, getFeaturedItems(), this);
         recyclerFeatured.setAdapter(featuredAdapter);
-
-        // Novel and Literature
-//        recyclerNovel.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-//        BookAdapter novelAdapter = new BookAdapter(this, getNovelBooks());
-//        recyclerNovel.setAdapter(novelAdapter);
-        loadRecyclerView(NOVELS, recyclerNovel);
-
-        // Child and Teenager
-//        recyclerChild.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-//        BookAdapter childAdapter = new BookAdapter(this, getChildBooks());
-//        recyclerChild.setAdapter(childAdapter);
-        loadRecyclerView(CHILD_AND_TEENAGER, recyclerChild);
-
-        // Non Fiction
-//        recyclerNonFic.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-//        BookAdapter nonFicAdapter = new BookAdapter(this, getNonFicBooks());
-//        recyclerNonFic.setAdapter(nonFicAdapter);
-        loadRecyclerView(NON_FICTION, recyclerNonFic);
-
-        // Short Stories
-//        recyclerShortStories.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-//        BookAdapter shortStoriesAdapter = new BookAdapter(this, getShortStories());
-//        recyclerShortStories.setAdapter(shortStoriesAdapter);
-        loadRecyclerView(SHORT_STORIES, recyclerShortStories);
-
-        // Poems
-//        recyclerPoems.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-//        BookAdapter poemsAdapter = new BookAdapter(this, getPoems());
-//        recyclerPoems.setAdapter(poemsAdapter);
-        loadRecyclerView(POEMS, recyclerPoems);
     }
 
+//    private void openCategoryList(String categoryName, String categoryQuery) {
+//        Intent intent = new Intent(this, ShowListBookCategories.class);
+//        intent.putExtra(ShowListBookCategories.EXTRA_CATEGORY_NAME, categoryName);
+//        intent.putExtra(ShowListBookCategories.EXTRA_CATEGORY_QUERY, categoryQuery);
+//        startActivity(intent);
+//    }
 
+    @Override
+    public void onCategoryClick(BookCateItem item) {
+        String categoryQuery;
 
-    private void loadRecyclerView(String category, RecyclerView recyclerView) {
-        Call<BookApiResponse> call = api.getBooksForCategoryName(category);
-        call.enqueue(new Callback<BookApiResponse>() {
-            @Override
-            public void onResponse(Call<BookApiResponse> call, Response<BookApiResponse> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    List<BookAPI> books = response.body().getBooks();
+        String categoryName = item.getType();
 
-                    recyclerView.setLayoutManager(new LinearLayoutManager(BookCategoriesActivity.this, LinearLayoutManager.HORIZONTAL, false));
-                    BookAPiAdapter adapter = new BookAPiAdapter(books, BookCategoriesActivity.this);
-                    recyclerView.setAdapter(adapter);
-                }
-                else {
-                    Log.d("Show novels", "Error");
-                }
-            }
+        switch (categoryName) {
+            case "Non fiction":
+                categoryQuery = NON_FICTION;
+                break;
+            case "History":
+                categoryQuery = "subject:history";
+                break;
+            case "Business":
+                categoryQuery = "subject:business";
+                break;
+            case "Computer and Programming":
+                categoryQuery = "subject:computers";
+                break;
+            case "Science":
+                categoryQuery = "subject:science";
+                break;
+            default:
+                categoryQuery = "subject:" + categoryName.toLowerCase().replace(" ", "+");
+        }
 
-            @Override
-            public void onFailure(Call<BookApiResponse> call, Throwable t) {
-                t.printStackTrace();
-            }
-        });
+//        openCategoryList(categoryName, categoryQuery);
     }
 
     private List<BookCateItem> getFeaturedItems() {
@@ -160,38 +136,4 @@ public class BookCategoriesActivity extends AppCompatActivity {
         list.add(new BookCateItem("Science",R.drawable.poster_science));
         return list;
     }
-
-//    private List<Book> getNovelBooks() {
-//        List<Book> list = new ArrayList<>();
-//        list.add(new Book(R.drawable.ic_home_24, "Tiểu Thuyết 1", "Tác giả A"));
-//        list.add(new Book(R.drawable.ic_library_24, "Tiểu Thuyết 2", "Tác giả B"));
-//        return list;
-//    }
-
-//    private List<Book> getChildBooks() {
-//        List<Book> list = new ArrayList<>();
-//        list.add(new Book(R.drawable.ic_store_24, "Truyện Thiếu Nhi", "Tác giả C"));
-//        return list;
-//    }
-
-//    private List<Book> getNonFicBooks() {
-//        List<Book> list = new ArrayList<>();
-//        list.add(new Book(R.drawable.ic_search_24, "Sách Phi Hư Cấu", "Tác giả D"));
-//        return list;
-//    }
-
-//    private List<Book> getShortStories() {
-//        List<Book> list = new ArrayList<>();
-//        list.add(new Book(R.drawable.ic_arrow_forward, "Truyện Ngắn 1", "Tác giả E"));
-//        return list;
-//    }
-
-//    private List<Book> getPoems() {
-//        List<Book> list = new ArrayList<>();
-//        list.add(new Book(R.drawable.ic_home_24, "Thơ Ca", "Tác giả F"));
-//        return list;
-//    }
-
-
 }
-
