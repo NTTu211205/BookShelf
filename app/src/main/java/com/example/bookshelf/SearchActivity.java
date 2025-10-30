@@ -64,7 +64,7 @@ public class SearchActivity extends AppCompatActivity {
 
         rcNearest = findViewById(R.id.rcNearest);
         rcRead = findViewById(R.id.rcRead);
-        rcTrend = findViewById(R.id.rcTrend);
+//        rcTrend = findViewById(R.id.rcTrend);
 
         // --- Setup Nearest Search (VERTICAL list of search terms) ---
         rcNearest.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
@@ -77,9 +77,9 @@ public class SearchActivity extends AppCompatActivity {
         rcRead.setAdapter(readAdapter);
 
         // --- Setup Trending (VERTICAL list of search terms) ---
-        rcTrend.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-        SearchTermAdapter trendAdapter = new SearchTermAdapter(this, getTrendingSearchTerms());
-        rcTrend.setAdapter(trendAdapter);
+//        rcTrend.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+//        SearchTermAdapter trendAdapter = new SearchTermAdapter(this, getTrendingSearchTerms());
+//        rcTrend.setAdapter(trendAdapter);
     }
 
     // --- Phương thức tạo dữ liệu cho Nearest Search (List<NearestSearchItem>) ---
@@ -99,6 +99,7 @@ public class SearchActivity extends AppCompatActivity {
         list.add(new NearestRead(R.drawable.ic_library_24, "Tác giả B", "Book", "Sách Đã Đọc"));
         return list;
     }
+
     private List<NearestSearchItem> getTrendingSearchTerms() {
         List<NearestSearchItem> list = new ArrayList<>();
         list.add(new NearestSearchItem("Tiểu thuyết mới"));

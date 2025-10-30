@@ -51,8 +51,9 @@
                 android:fontFamily="@font/times"
                 android:paddingStart="20dp"
                 android:text="FEATURED COLLECTION"
-                android:textColor="#AAAAAA"
-                android:textSize="12sp"
+                android:textColor="@color/white"
+                android:textSize="12dp"
+                android:gravity="center_vertical"
                 android:textStyle="bold"
                 android:textAllCaps="true" />
             <LinearLayout
@@ -64,19 +65,30 @@
                     android:id="@+id/recyclerView_featured"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
                     android:clipToPadding="false"
+                    android:orientation="horizontal"
                     android:paddingStart="16dp"
                     android:paddingEnd="16dp"
                     tools:listitem="@layout/items_featured_col" />
 
             </LinearLayout>
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="OTHER COLLECTION"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:layout_marginStart="20dp"
+                android:fontFamily="@font/times"
+                android:textColor="@color/white"
+                android:layout_marginTop="30dp"/>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_marginTop="24dp">
+                android:layout_marginTop="10dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -100,7 +112,7 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rcNovelAndLiterature"
                     android:layout_width="match_parent"
-                    android:layout_height="220dp"
+                    android:layout_height="wrap_content"
                     android:clipToPadding="false"
                     android:orientation="horizontal"
                     android:paddingTop="16dp"/>
@@ -133,7 +145,7 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerView_child"
                     android:layout_width="match_parent"
-                    android:layout_height="220dp"
+                    android:layout_height="wrap_content"
                     android:clipToPadding="false"
                     android:orientation="horizontal"
                     android:paddingTop="16dp"/>
@@ -166,7 +178,8 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recycler_nonFic"
                     android:layout_width="match_parent"
-                    android:layout_height="220dp" android:clipToPadding="false"
+                    android:layout_height="wrap_content"
+                    android:clipToPadding="false"
                     android:orientation="horizontal"
                     android:paddingTop="16dp"/>
             </LinearLayout>
@@ -198,7 +211,8 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recycler_shortStories"
                     android:layout_width="match_parent"
-                    android:layout_height="220dp" android:clipToPadding="false"
+                    android:layout_height="wrap_content"
+                    android:clipToPadding="false"
                     android:orientation="horizontal"
                     android:paddingTop="16dp"/>
             </LinearLayout>
@@ -230,7 +244,8 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recycler_poems"
                     android:layout_width="match_parent"
-                    android:layout_height="220dp" android:clipToPadding="false"
+                    android:layout_height="wrap_content"
+                    android:clipToPadding="false"
                     android:orientation="horizontal"
                     android:paddingTop="16dp"/>
             </LinearLayout>
