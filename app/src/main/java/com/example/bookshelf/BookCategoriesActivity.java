@@ -73,8 +73,8 @@ public class BookCategoriesActivity extends AppCompatActivity implements BookCat
             return itemId == R.id.nav_bookstore;
         });
 
-        tvNovel = findViewById(R.id.rcNovelAndLiterature);
-        tvChild = findViewById(R.id.recyclerView_child);
+        tvNovel = findViewById(R.id.tvNovelAndLiterature);
+        tvChild = findViewById(R.id.tvChild);
         tvNonFic = findViewById(R.id.tv_nonFic);
         tvShortStories = findViewById(R.id.tv_ShortStory);
         tvPoems = findViewById(R.id.tv_poems);

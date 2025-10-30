@@ -116,7 +116,7 @@
                         android:layout_height="40dp"
                         android:layout_weight="1"
                         android:text="Preview"
-                        android:backgroundTint="@drawable/button_light_background"
+                        android:background="@drawable/button_light_background"
                         android:textColor="@android:color/white"
                         android:drawableStart="@android:drawable/ic_menu_agenda"
                         android:paddingStart="16dp"
@@ -133,7 +133,7 @@
                         android:layout_weight="1"
                         android:text="Save"
                         android:fontFamily="@font/times"
-                        android:backgroundTint="@drawable/button_light_background"
+                        android:background="@drawable/button_light_background"
                         android:textColor="@android:color/white"
                         android:layout_marginStart="8dp"
                         android:textAllCaps="false"/>
