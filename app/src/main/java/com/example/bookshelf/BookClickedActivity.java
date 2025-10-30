@@ -54,7 +54,7 @@ public class BookClickedActivity extends AppCompatActivity {
                 finish();
                 return true;
             }
-            return false;
+            else return false;
         });
     }
 

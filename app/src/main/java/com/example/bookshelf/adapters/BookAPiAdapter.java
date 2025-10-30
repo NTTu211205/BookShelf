@@ -1,6 +1,8 @@
 package com.example.bookshelf.adapters;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.bookshelf.BookClickedActivity;
 import com.example.bookshelf.R;
 import com.example.bookshelf.api.models.BookAPI;
 import com.squareup.picasso.Picasso;
@@ -60,6 +63,15 @@ public class BookAPiAdapter extends RecyclerView.Adapter<PicksHolder> {
         }
 
         holder.textView_author.setText(authors);
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(), BookClickedActivity.class);
+                v.getContext().startActivity(intent);
+                ((Activity) v.getContext()).finish();
+            }
+        });
     }
 
     @Override
