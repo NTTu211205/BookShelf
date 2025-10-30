@@ -15,7 +15,10 @@
         android:theme="@style/Theme.BookShelf"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".GoListBookCate"
+            android:name=".ShowAllBookOfCate"
+            android:exported="false" />
+        <activity
+            android:name=".ShowAllBookCateActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
@@ -29,8 +32,6 @@
         <activity android:name=".LibraryActivity" />
         <activity android:name=".BookCategoriesActivity" />
         <activity android:name=".SearchActivity" />
-        <activity android:name=".BookClickedActivity" />
-        <activity android:name=".PreviewActivity" />
     </application>
 
 </manifest>
