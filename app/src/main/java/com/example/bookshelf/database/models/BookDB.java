@@ -8,7 +8,7 @@ import com.example.bookshelf.api.models.BookInfo;
 import com.example.bookshelf.api.models.ImageLinks;
 import com.google.gson.annotations.SerializedName;
 
-@Entity
+@Entity(tableName="Book")
 public class BookDB {
     @PrimaryKey(autoGenerate = true)
     private long bookId;

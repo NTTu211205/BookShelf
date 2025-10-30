@@ -8,7 +8,7 @@ import com.google.gson.annotations.SerializedName;
 
 import org.intellij.lang.annotations.Pattern;
 
-@Entity
+@Entity(tableName = "ImageLink")
 public class ImageLinkDB {
     @PrimaryKey(autoGenerate = true)
     private long imageLinkId;
@@ -17,7 +17,7 @@ public class ImageLinkDB {
     @ColumnInfo(name="smallThumbnail")
     private String smallThumnail;
     @ColumnInfo(name="thumbnail")
-    private String thumnail;
+    private String thumbnail;
     @ColumnInfo(name="small")
     private String small;
     @ColumnInfo(name="medium")
@@ -30,10 +30,10 @@ public class ImageLinkDB {
 
 
     // Constructor
-    public ImageLinkDB(String bookInfoId, String smallThumnail, String thumnail, String small, String medium, String large, String extraLarge) {
+    public ImageLinkDB(String bookInfoId, String smallThumbnail, String thumbnail, String small, String medium, String large, String extraLarge) {
         this.bookInfoId = bookInfoId;
-        this.smallThumnail = smallThumnail;
-        this.thumnail = thumnail;
+        this.smallThumnail = smallThumbnail;
+        this.thumbnail = thumbnail;
         this.small = small;
         this.medium = medium;
         this.large = large;
@@ -68,11 +68,11 @@ public class ImageLinkDB {
     }
 
     public String getThumnail() {
-        return thumnail;
+        return thumbnail;
     }
 
     public void setThumnail(String thumnail) {
-        this.thumnail = thumnail;
+        this.thumbnail = thumnail;
     }
 
     public String getSmall() {
