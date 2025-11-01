@@ -2,28 +2,32 @@ package com.example.bookshelf;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.example.bookshelf.adapters.NearestAdapter;
-import com.example.bookshelf.adapters.SearchTermAdapter; // Đã thêm
+import com.example.bookshelf.api.ApiService;
 import com.example.bookshelf.models.NearestRead;
-import com.example.bookshelf.models.NearestSearchItem; // Đã thêm
+import com.example.bookshelf.api.ApiClient;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.internal.connection.RealCall;
+
 public class SearchActivity extends AppCompatActivity {
-
-    private RecyclerView rcNearest, rcRead, rcTrend;
-
+    ApiService apiService = ApiClient.getClient().create(ApiService.class);
+    LinearLayout lnGone, lnNearestSearch;
+    SearchView searchView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,50 +66,28 @@ public class SearchActivity extends AppCompatActivity {
             return itemId == R.id.nav_search;
         });
 
-        rcNearest = findViewById(R.id.rcNearest);
-        rcRead = findViewById(R.id.rcRead);
-//        rcTrend = findViewById(R.id.rcTrend);
+        lnGone = findViewById(R.id.lnGone);
+        lnNearestSearch = findViewById(R.id.lnNearestSearch);
+        searchView = findViewById(R.id.search_input_view);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                if (newText.isEmpty()) {
+                    lnGone.setVisibility(View.GONE);
+                    lnNearestSearch.setVisibility(View.VISIBLE);
+                }
+                else{
+                    lnGone.setVisibility(View.VISIBLE);
+                    lnNearestSearch.setVisibility(View.GONE);
+                }
+                return true;
+            }
 
-        // --- Setup Nearest Search (VERTICAL list of search terms) ---
-        rcNearest.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-        SearchTermAdapter nearestAdapter = new SearchTermAdapter(this, getNearestSearchTerms());
-        rcNearest.setAdapter(nearestAdapter);
+            @Override
+            public boolean onQueryTextSubmit(String query) {
 
-        // --- Setup Nearest Read (HORIZONTAL list of NearestRead items) ---
-        rcRead.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        NearestAdapter readAdapter = new NearestAdapter(this, getReadBooks());
-        rcRead.setAdapter(readAdapter);
-
-        // --- Setup Trending (VERTICAL list of search terms) ---
-//        rcTrend.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-//        SearchTermAdapter trendAdapter = new SearchTermAdapter(this, getTrendingSearchTerms());
-//        rcTrend.setAdapter(trendAdapter);
-    }
-
-    // --- Phương thức tạo dữ liệu cho Nearest Search (List<NearestSearchItem>) ---
-    private List<NearestSearchItem> getNearestSearchTerms() {
-        List<NearestSearchItem> list = new ArrayList<>();
-        list.add(new NearestSearchItem("sherlock holmes"));
-        list.add(new NearestSearchItem("horror"));
-        list.add(new NearestSearchItem("richard harding"));
-        list.add(new NearestSearchItem("cinderella"));
-        return list;
-    }
-
-    private List<NearestRead> getReadBooks() {
-        List<NearestRead> list = new ArrayList<>();
-        list.add(new NearestRead(R.drawable.ic_arrow_forward, "Tác giả Z", "Book", "Sách Đã Đọc"));
-        list.add(new NearestRead(R.drawable.ic_home_24, "Tác giả A", "Book", "Sách Đã Đọc"));
-        list.add(new NearestRead(R.drawable.ic_library_24, "Tác giả B", "Book", "Sách Đã Đọc"));
-        return list;
-    }
-
-    private List<NearestSearchItem> getTrendingSearchTerms() {
-        List<NearestSearchItem> list = new ArrayList<>();
-        list.add(new NearestSearchItem("Tiểu thuyết mới"));
-        list.add(new NearestSearchItem("Self-Help bán chạy"));
-        list.add(new NearestSearchItem("Truyện tranh Nhật Bản"));
-        list.add(new NearestSearchItem("Kinh tế 2024"));
-        return list;
+                return true;
+            }
+        });
     }
 }
