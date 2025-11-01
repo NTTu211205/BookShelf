@@ -12,10 +12,12 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import com.example.bookshelf.R;
@@ -25,7 +27,10 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class ShowAllBookCateActivity extends AppCompatActivity {
     RecyclerView recyclerView;
-    private List<String> stringList;
+    private final String[] categories = {"Fiction", "Non-Fiction", "Science Fiction", "Mystery",
+            "Romance", "Fantasy", "Thriller", "Horror", "Historical Fiction", "Young Adult",
+            "Contemporary", "Humor", "Poetry", "Adventure", "Science", "Self-Help", "Business",
+            "Travel", "Religion", "Philosophy", "History", "Comics"};
     ImageButton imgButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,30 +83,7 @@ public class ShowAllBookCateActivity extends AppCompatActivity {
         });
 
         recyclerView = findViewById(R.id.rv_allBookCate);
-        stringList = new ArrayList<>();
-        stringList.add("Fiction");
-        stringList.add("Non-Fiction");
-        stringList.add("Science Fiction");
-        stringList.add("Mystery");
-        stringList.add("Romance");
-        stringList.add("Fantasy");
-        stringList.add("Thriller");
-        stringList.add("Horror");
-        stringList.add("Historical Fiction");
-        stringList.add("Young Adult");
-        stringList.add("Contemporary");
-        stringList.add("Humor");
-        stringList.add("Poetry");
-        stringList.add("Adventure");
-        stringList.add("Science");
-        stringList.add("Self-Help");
-        stringList.add("Business");
-        stringList.add("Travel");
-        stringList.add("Religion");
-        stringList.add("Philosophy");
-        stringList.add("History");
-        stringList.add("Comics");
-
+        List<String> stringList = Arrays.asList(categories);
         CategoriesAdapter adapter = new CategoriesAdapter(stringList);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));

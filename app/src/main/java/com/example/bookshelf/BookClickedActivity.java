@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -30,6 +31,7 @@ import retrofit2.Response;
 
 public class BookClickedActivity extends AppCompatActivity {
     ImageView book_cover;
+    ImageButton btn_back;
     TextView book_title, book_author, book_category, tvPublishedYear, tvPageNumber, tv_book_description;
     Button btn_read_sample, btn_get, btShowAll;
     private static ApiService api = ApiClient.getClient().create(ApiService.class);
@@ -53,8 +55,16 @@ public class BookClickedActivity extends AppCompatActivity {
         String bookId = intent.getStringExtra("bookId");
         load(bookId);
 
+        btn_back = findViewById(R.id.btn_back);
+        btn_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation_view);
-        bottomNavigationView.setSelectedItemId(R.id.nav_library);
+        bottomNavigationView.setSelectedItemId(R.id.nav_bookstore);
         bottomNavigationView.setOnItemSelectedListener(item -> {
             int itemId = item.getItemId();
 

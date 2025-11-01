@@ -58,6 +58,7 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Ca
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), ShowAllBookOfCate.class);
+                intent.putExtra("categoryName", string);
                 v.getContext().startActivity(intent);
             }
         });
