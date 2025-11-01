@@ -8,6 +8,7 @@
     android:layout_height="match_parent"
     android:background="@color/black"
     tools:context=".SearchActivity">
+
     <androidx.appcompat.widget.SearchView
         android:id="@+id/search_input_view"
         android:layout_width="match_parent"
@@ -35,18 +36,32 @@
         app:labelVisibilityMode="labeled"
         app:menu="@menu/bottom_nav_menu"/>
 
-    <androidx.core.widget.NestedScrollView
+    <LinearLayout
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/search_input_view"
         android:layout_above="@id/bottom_navigation_view"
+        android:orientation="vertical"
         android:fillViewport="true">
+
         <LinearLayout
+            android:id="@+id/lnGone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="gone">
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="15dp"/>
+        </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:id="@+id/lnNearestSearch"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -65,45 +80,8 @@
                 android:layout_height="wrap_content"
                 android:paddingStart="15dp"
                 android:orientation="vertical"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="24dp"
-                android:text="NEAREST SAVED"
-                android:textColor="@android:color/white"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:fontFamily="@font/times"
-                android:layout_marginBottom="8dp"/>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rcRead"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingStart="15dp"
-                android:orientation="vertical"/>
-
-<!--            <TextView-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginStart="20dp"-->
-<!--                android:layout_marginTop="24dp"-->
-<!--                android:text="TRENDING"-->
-<!--                android:textColor="@android:color/white"-->
-<!--                android:textSize="20sp"-->
-<!--                android:textStyle="bold"-->
-<!--                android:fontFamily="@font/times"-->
-<!--                android:layout_marginBottom="8dp"/>-->
-
-<!--            <androidx.recyclerview.widget.RecyclerView-->
-<!--                android:id="@+id/rcTrend"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:paddingStart="15dp"-->
-<!--                android:orientation="vertical"/>-->
         </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
+
+    </LinearLayout>
 
 </RelativeLayout>
