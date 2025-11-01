@@ -12,5 +12,5 @@
         android:layout_height="160dp"
         android:scaleType="centerCrop"
         android:src="@drawable/ic_store_24"
-        app:tint="@android:color/white"/>
+        app:tint="#FFFFFF"/>
 </LinearLayout>
