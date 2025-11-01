@@ -48,8 +48,16 @@ public class BookInfo {
         this.title = title;
     }
 
-    public String[] getAuthors() {
-        return authors;
+    public String getAuthors() {
+        if (authors == null) {
+            return "";
+        }
+
+        String stringAuthors = "";
+        for (String i: authors) {
+            stringAuthors += i + ", ";
+        }
+        return stringAuthors.substring(0, stringAuthors.length() - 2);
     }
 
     public void setAuthors(String[] authors) {
@@ -96,8 +104,12 @@ public class BookInfo {
         this.printType = printType;
     }
 
-    public String[] getCatrgories() {
-        return catrgories;
+    public String getCatrgories() {
+        String stringCategories = "";
+        for (String i:catrgories) {
+            stringCategories += i + ",\n" ;
+        }
+        return stringCategories.substring(0, stringCategories.length() - 2);
     }
 
     public void setCatrgories(String[] catrgories) {

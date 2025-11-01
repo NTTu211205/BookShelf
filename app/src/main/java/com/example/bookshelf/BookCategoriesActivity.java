@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View; // Thêm import
+import android.widget.Button;
 import android.widget.TextView; // Thêm import
 
 import androidx.activity.EdgeToEdge;
@@ -41,12 +42,10 @@ public class BookCategoriesActivity extends AppCompatActivity {
 
     private final ApiService api = ApiClient.getClient().create(ApiService.class);
 
-
-
-
     private RecyclerView recyclerFeatured;
     private RecyclerView recyclerNovel, recyclerChild, recyclerNonFic, recyclerShortStories, recyclerPoems;
     private TextView tvNovel, tvChild, tvNonFic, tvShortStories, tvPoems;
+    Button btShowAll;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +77,16 @@ public class BookCategoriesActivity extends AppCompatActivity {
                 return true;
             }
             return itemId == R.id.nav_bookstore;
+        });
+
+        btShowAll = findViewById(R.id.btShowAll);
+        btShowAll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(BookCategoriesActivity.this, ShowAllBookCateActivity.class);
+                startActivity(intent);
+                finish();
+            }
         });
 
         tvNovel = findViewById(R.id.tvNovelAndLiterature);
