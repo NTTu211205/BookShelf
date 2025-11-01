@@ -62,7 +62,7 @@ public class BookAPiAdapter extends RecyclerView.Adapter<PicksHolder> {
                 Intent intent = new Intent(v.getContext(), BookClickedActivity.class);
                 intent.putExtra("bookId", book.getId());
                 v.getContext().startActivity(intent);
-                ((Activity) v.getContext()).finish();
+//                ((Activity) v.getContext()).finish();
             }
         });
     }
