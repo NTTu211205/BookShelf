@@ -9,16 +9,31 @@
     android:background="@color/black"
     tools:context=".BookCategoriesActivity">
 
-    <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/toolbar"
+    <LinearLayout
         android:layout_width="match_parent"
+        android:id="@+id/lnOut"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:paddingStart="20dp"
-        android:background="@android:color/transparent"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:title="BOOK CATEGORIES"
-        app:titleTextAppearance="@style/ToolbarTitleText" />
+        android:orientation="horizontal">
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:paddingStart="20dp"
+            android:background="@android:color/transparent"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:title="BOOK CATEGORIES"
+            app:titleTextAppearance="@style/ToolbarTitleText" />
+
+        <Button
+            android:id="@+id/btShowAll"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textColor="@color/bottom_nav_colors"
+            android:text="Show All"
+            style="@style/Widget.MaterialComponents.Button.TextButton" />
+    </LinearLayout>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation_view"
@@ -35,7 +50,7 @@
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/toolbar"
+        android:layout_below="@id/lnOut"
         android:layout_above="@id/bottom_navigation_view"
         android:fillViewport="true">
 

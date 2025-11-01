@@ -54,20 +54,13 @@ public class BookAPiAdapter extends RecyclerView.Adapter<PicksHolder> {
                 .error(R.drawable.non_thumbnail)
                 .into(holder.imageView_book);
 
-        String authors = "";
-        if (book.getBookInfo() != null && book.getBookInfo().getAuthors() != null) {
-            for (String author: book.getBookInfo().getAuthors()) {
-                authors += author + ", ";
-            }
-            authors = authors.substring(0, authors.length() - 2);
-        }
-
-        holder.textView_author.setText(authors);
+        holder.textView_author.setText(book.getBookInfo().getAuthors());
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), BookClickedActivity.class);
+                intent.putExtra("bookId", book.getId());
                 v.getContext().startActivity(intent);
                 ((Activity) v.getContext()).finish();
             }
