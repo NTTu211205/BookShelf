@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.core.view.WindowCompat; // Thêm import WindowCompat
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -35,13 +36,20 @@ public class ShowAllBookCateActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
+
+        // Thiết lập Edge-to-Edge
+        WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
         setContentView(R.layout.activity_show_all_book_cate);
+
+        // --- ĐOẠN CODE TỰ THÊM PADDING ĐÃ BỊ XÓA ---
+        /*
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        */
+
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
@@ -50,6 +58,12 @@ public class ShowAllBookCateActivity extends AppCompatActivity {
             finish();
         });
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation_view);
+
+        // --- THÊM: BUỘC BottomNavigationView LOẠI BỎ PADDING TỰ ĐỘNG ---
+        if (bottomNavigationView != null) {
+            bottomNavigationView.setPadding(0, 0, 0, 0);
+        }
+
         bottomNavigationView.setSelectedItemId(R.id.nav_bookstore);
         bottomNavigationView.setOnItemSelectedListener(item -> {
             int itemId = item.getItemId();

@@ -5,9 +5,11 @@ import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+import androidx.core.view.WindowCompat;
+// Loại bỏ các imports không dùng nữa nếu bạn chỉ dùng WindowCompat.setDecorFitsSystemWindows()
+// import androidx.core.graphics.Insets;
+// import androidx.core.view.ViewCompat;
+// import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -23,15 +25,22 @@ public class LibraryActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.lib_page);
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
+//        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+//            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+//            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+//            return insets;
+//        });
+
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation_view);
+        // add
+        WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
+        //add
+        if (bottomNavigationView != null) {
+            bottomNavigationView.setPadding(0, 0, 0, 0);
+        }
+
         bottomNavigationView.setSelectedItemId(R.id.nav_library);
         bottomNavigationView.setOnItemSelectedListener(item -> {
             int itemId = item.getItemId();
