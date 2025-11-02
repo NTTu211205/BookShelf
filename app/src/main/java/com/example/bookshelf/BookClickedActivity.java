@@ -34,7 +34,7 @@ public class BookClickedActivity extends AppCompatActivity {
     ImageView book_cover;
     ImageButton btn_back;
     TextView book_title, book_author, book_category, tvPublishedYear, tvPageNumber, tv_book_description;
-    Button btn_read_sample, btn_get, btShowAll;
+    Button btn_read_sample, btn_get;
     private static ApiService api = ApiClient.getClient().create(ApiService.class);
 
     @Override
@@ -51,10 +51,10 @@ public class BookClickedActivity extends AppCompatActivity {
             return insets;
         });
 
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setTitle("Chi tiết sách");
-        }
+//        if (getSupportActionBar() != null) {
+//            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//            getSupportActionBar().setTitle("Chi tiết sách");
+//        }
 
         Intent intent = getIntent();
         String bookId = intent.getStringExtra("bookId");
@@ -74,6 +74,16 @@ public class BookClickedActivity extends AppCompatActivity {
         if (bottomNavigationView != null) {
             bottomNavigationView.setPadding(0, 0, 0, 0);
         }
+
+        btn_read_sample = findViewById(R.id.btn_read_sample);
+        btn_read_sample.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(BookClickedActivity.this, PreviewActivity.class);
+                intent.putExtra("bookId", bookId);
+                startActivity(intent);
+            }
+        });
 
         bottomNavigationView.setSelectedItemId(R.id.nav_bookstore);
         bottomNavigationView.setOnItemSelectedListener(item -> {
