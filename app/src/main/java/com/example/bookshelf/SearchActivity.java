@@ -1,10 +1,11 @@
 package com.example.bookshelf;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.EditText;
+import android.view.inputmethod.InputMethodManager; // <-- THÊM IMPORT
 import android.widget.LinearLayout;
 
 import androidx.activity.EdgeToEdge;
@@ -13,16 +14,12 @@ import androidx.appcompat.widget.SearchView;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModel;
-import androidx.lifecycle.ViewModelProvider;
+import androidx.core.view.WindowCompat; // Giữ nguyên import này
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.bookshelf.adapters.BookAPiAdapter;
-import com.example.bookshelf.adapters.NearestAdapter;
 import com.example.bookshelf.adapters.SearchTermAdapter;
 import com.example.bookshelf.api.ApiService;
 import com.example.bookshelf.api.models.BookAPI;
@@ -30,14 +27,11 @@ import com.example.bookshelf.api.response.BookApiResponse;
 import com.example.bookshelf.database.AppDatabase;
 import com.example.bookshelf.database.dao.SearchDao;
 import com.example.bookshelf.database.models.SearchHistory;
-import com.example.bookshelf.models.NearestRead;
 import com.example.bookshelf.api.ApiClient;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import okhttp3.internal.connection.RealCall;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -53,15 +47,25 @@ public class SearchActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
+
+        // Thiết lập Edge-to-Edge
+        WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
         setContentView(R.layout.search_page);
 
+        // Khắc phục lỗi thanh trạng thái đè (Đã sửa ở lần trước)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, 0);
             return insets;
         });
+
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation_view);
+
+        // Buộc BottomNavigationView lấp đầy khoảng trống dưới (Đã sửa ở lần trước)
+        if (bottomNavigationView != null) {
+            bottomNavigationView.setPadding(0, 0, 0, 0);
+        }
+
         bottomNavigationView.setSelectedItemId(R.id.nav_search);
 
         bottomNavigationView.setOnItemSelectedListener(item -> {
@@ -111,6 +115,13 @@ public class SearchActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextSubmit(String query) {
+
+                // 1. GỌI HÀM ẨN BÀN PHÍM
+                hideKeyboard();
+
+                // 2. XÓA TIÊU ĐIỂM KHỎI SEARCHVIEW
+                searchView.clearFocus();
+
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
@@ -170,5 +181,12 @@ public class SearchActivity extends AppCompatActivity {
                 });
             }
         }).start();
+    }
+    private void hideKeyboard() {
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        View view = getCurrentFocus();
+        if (view != null) {
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
     }
 }
