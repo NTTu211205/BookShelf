@@ -116,13 +116,6 @@ public class SearchActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         insertDB(query);
-
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                adapter.notifyDataSetChanged();
-                            }
-                        });
                     }
                 }).start();
 

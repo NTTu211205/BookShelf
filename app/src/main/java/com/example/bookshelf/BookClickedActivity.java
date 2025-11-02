@@ -127,8 +127,13 @@ public class BookClickedActivity extends AppCompatActivity {
                                 .error(R.drawable.non_thumbnail)
                                 .into(book_cover);
 
-                        Spanned spannedText = HtmlCompat.fromHtml(bookInfo.getDescription(), HtmlCompat.FROM_HTML_MODE_LEGACY);
-                        tv_book_description.setText(spannedText);
+                        if (bookInfo.getDescription() != null) {
+                            Spanned spannedText = HtmlCompat.fromHtml(bookInfo.getDescription(), HtmlCompat.FROM_HTML_MODE_LEGACY);
+                            tv_book_description.setText(spannedText);
+                        }
+                        else {
+                            tv_book_description.setText("No description");
+                        }
                     }
 
                 }
