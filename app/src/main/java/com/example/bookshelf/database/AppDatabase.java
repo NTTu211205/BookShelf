@@ -24,6 +24,9 @@ import com.example.bookshelf.database.models.SearchHistory;
 public abstract class AppDatabase extends RoomDatabase {
     private static final String DB_NAME = "BOOK_SHELF";
     private static volatile AppDatabase instance;
+
+
+
     public abstract BookDao bookDao();
     public abstract BookInfoDao bookInfoDao();
     public abstract ImageLinkDao imageLinkDao();

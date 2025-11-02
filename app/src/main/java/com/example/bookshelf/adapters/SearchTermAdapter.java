@@ -4,13 +4,16 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.bookshelf.R;
+import com.example.bookshelf.SearchActivity;
 import com.example.bookshelf.database.models.SearchHistory;
 import com.example.bookshelf.models.NearestSearchItem;
 
@@ -20,6 +23,7 @@ public class SearchTermAdapter extends RecyclerView.Adapter<SearchTermAdapter.Se
 
     private Context context;
     private List<SearchHistory> itemList;
+    SearchView search;
 
     public SearchTermAdapter(Context context, List<SearchHistory> itemList) {
         this.context = context;
@@ -37,16 +41,19 @@ public class SearchTermAdapter extends RecyclerView.Adapter<SearchTermAdapter.Se
     public void onBindViewHolder(@NonNull SearchTermViewHolder holder, int position) {
         SearchHistory item = itemList.get(position);
         holder.textViewSearchTerm.setText(item.getContent());
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                search = ((SearchActivity) context).findViewById(R.id.search_input_view);
+                search.setQuery(item.getContent(), true);
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
         return itemList.size();
-    }
-
-    public void updateList(List<SearchHistory> newList) {
-        this.itemList = newList;
-        notifyDataSetChanged(); // Báo cho RecyclerView vẽ lại
     }
 
     public static class SearchTermViewHolder extends RecyclerView.ViewHolder {
