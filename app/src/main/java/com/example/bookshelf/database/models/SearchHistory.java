@@ -2,6 +2,7 @@ package com.example.bookshelf.database.models;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "SearchHistory")
@@ -11,6 +12,12 @@ public class SearchHistory {
     @ColumnInfo(name="content")
     private String content;
 
+    public SearchHistory(long id, String content) {
+        this.id = id;
+        this.content = content;
+    }
+
+    @Ignore
     public SearchHistory(String content) {
         this.content = content;
     }

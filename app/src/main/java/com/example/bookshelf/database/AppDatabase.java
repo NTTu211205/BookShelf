@@ -13,10 +13,11 @@ import com.example.bookshelf.database.dao.SearchDao;
 import com.example.bookshelf.database.models.BookDB;
 import com.example.bookshelf.database.models.BookInfoDB;
 import com.example.bookshelf.database.models.ImageLinkDB;
+import com.example.bookshelf.database.models.SearchHistory;
 
 @Database(
         entities = {
-                BookDB.class, BookInfoDB.class, ImageLinkDB.class
+                BookDB.class, BookInfoDB.class, ImageLinkDB.class, SearchHistory.class
         },
         version = 1
 )
