@@ -17,6 +17,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.text.HtmlCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.core.view.WindowCompat; // Thêm import WindowCompat
 
 import com.bumptech.glide.Glide;
 import com.example.bookshelf.api.ApiClient;
@@ -39,13 +40,20 @@ public class BookClickedActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
+
+        // Thiết lập Edge-to-Edge
+        WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
         setContentView(R.layout.book_clicked);
+
+        // --- XÓA MÃ TỰ THÊM PADDING CHO LAYOUT CHÍNH ---
+        /*
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        */
+
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setTitle("Chi tiết sách");
@@ -64,6 +72,12 @@ public class BookClickedActivity extends AppCompatActivity {
         });
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation_view);
+
+        // --- THÊM: BUỘC BottomNavigationView LOẠI BỎ PADDING TỰ ĐỘNG ---
+        if (bottomNavigationView != null) {
+            bottomNavigationView.setPadding(0, 0, 0, 0);
+        }
+
         bottomNavigationView.setSelectedItemId(R.id.nav_bookstore);
         bottomNavigationView.setOnItemSelectedListener(item -> {
             int itemId = item.getItemId();
