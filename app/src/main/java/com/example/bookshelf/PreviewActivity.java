@@ -24,14 +24,11 @@ public class PreviewActivity extends AppCompatActivity {
 
         setContentView(R.layout.preview_page);
 
-        // --- ĐOẠN CODE TỰ THÊM PADDING ĐÃ BỊ XÓA ---
-        /*
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, 0);
             return insets;
         });
-        */
 
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
