@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.bookshelf.R;
+import com.example.bookshelf.database.models.SearchHistory;
 import com.example.bookshelf.models.NearestSearchItem;
 
 import java.util.List;
@@ -18,9 +19,9 @@ import java.util.List;
 public class SearchTermAdapter extends RecyclerView.Adapter<SearchTermAdapter.SearchTermViewHolder> {
 
     private Context context;
-    private List<NearestSearchItem> itemList;
+    private List<SearchHistory> itemList;
 
-    public SearchTermAdapter(Context context, List<NearestSearchItem> itemList) {
+    public SearchTermAdapter(Context context, List<SearchHistory> itemList) {
         this.context = context;
         this.itemList = itemList;
     }
@@ -34,13 +35,18 @@ public class SearchTermAdapter extends RecyclerView.Adapter<SearchTermAdapter.Se
 
     @Override
     public void onBindViewHolder(@NonNull SearchTermViewHolder holder, int position) {
-        NearestSearchItem item = itemList.get(position);
-        holder.textViewSearchTerm.setText(item.getSub());
+        SearchHistory item = itemList.get(position);
+        holder.textViewSearchTerm.setText(item.getContent());
     }
 
     @Override
     public int getItemCount() {
         return itemList.size();
+    }
+
+    public void updateList(List<SearchHistory> newList) {
+        this.itemList = newList;
+        notifyDataSetChanged(); // Báo cho RecyclerView vẽ lại
     }
 
     public static class SearchTermViewHolder extends RecyclerView.ViewHolder {

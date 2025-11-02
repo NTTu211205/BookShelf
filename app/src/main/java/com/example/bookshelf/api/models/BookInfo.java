@@ -105,6 +105,10 @@ public class BookInfo {
     }
 
     public String getCatrgories() {
+        if (catrgories == null) {
+            return "";
+        }
+
         String stringCategories = "";
         for (String i:catrgories) {
             stringCategories += i + ",\n" ;

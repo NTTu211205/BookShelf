@@ -2,6 +2,7 @@ package com.example.bookshelf;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -12,9 +13,23 @@ import androidx.appcompat.widget.SearchView;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.bookshelf.adapters.BookAPiAdapter;
+import com.example.bookshelf.adapters.NearestAdapter;
+import com.example.bookshelf.adapters.SearchTermAdapter;
 import com.example.bookshelf.api.ApiService;
+import com.example.bookshelf.api.models.BookAPI;
+import com.example.bookshelf.api.response.BookApiResponse;
+import com.example.bookshelf.database.AppDatabase;
+import com.example.bookshelf.database.dao.SearchDao;
+import com.example.bookshelf.database.models.SearchHistory;
 import com.example.bookshelf.models.NearestRead;
 import com.example.bookshelf.api.ApiClient;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -23,11 +38,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.internal.connection.RealCall;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class SearchActivity extends AppCompatActivity {
-    ApiService apiService = ApiClient.getClient().create(ApiService.class);
+    private final ApiService api = ApiClient.getClient().create(ApiService.class);
     LinearLayout lnGone, lnNearestSearch;
+    RecyclerView rvBooks, rcNearest;
     SearchView searchView;
+    SearchTermAdapter adapter;
+    List<SearchHistory> searchHistories;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,13 +90,18 @@ public class SearchActivity extends AppCompatActivity {
 
         lnGone = findViewById(R.id.lnGone);
         lnNearestSearch = findViewById(R.id.lnNearestSearch);
+        rvBooks = findViewById(R.id.rvBooks);
+        rcNearest = findViewById(R.id.rcNearest);
         searchView = findViewById(R.id.search_input_view);
+        loadRecyclerViewNearestSearch();
+
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextChange(String newText) {
                 if (newText.isEmpty()) {
                     lnGone.setVisibility(View.GONE);
                     lnNearestSearch.setVisibility(View.VISIBLE);
+                    loadRecyclerViewNearestSearch();
                 }
                 else{
                     lnGone.setVisibility(View.VISIBLE);
@@ -85,9 +112,71 @@ public class SearchActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextSubmit(String query) {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        insertDB(query);
 
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                adapter.notifyDataSetChanged();
+                            }
+                        });
+                    }
+                }).start();
+
+                Call<BookApiResponse> call = api.getBooksForCategoryName(query);
+                call.enqueue(new Callback<BookApiResponse>() {
+                    @Override
+                    public void onResponse(Call<BookApiResponse> call, Response<BookApiResponse> response) {
+                        if (response.isSuccessful() && response.body() != null) {
+                            BookApiResponse bookApiResponse = response.body();
+                            List<BookAPI> bookAPIS = bookApiResponse.getBooks();
+
+                            BookAPiAdapter bookAPiAdapter = new BookAPiAdapter(bookAPIS, SearchActivity.this);
+                            rvBooks.setLayoutManager(new GridLayoutManager(SearchActivity.this, 3));
+                            rvBooks.setAdapter(bookAPiAdapter);
+                        }
+                        else {
+                            Log.d("Search Activity", "Error call api search");
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<BookApiResponse> call, Throwable t) {
+                        t.printStackTrace();
+                    }
+                });
                 return true;
             }
         });
+    }
+
+    private void insertDB(String content) {
+        Log.d("Search History", "Added to db");
+        SearchDao searchDao = AppDatabase.getDatabase(SearchActivity.this).searchDao();
+        searchDao.insert(new SearchHistory(content));
+    }
+
+    private void loadRecyclerViewNearestSearch() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                SearchDao searchDao = AppDatabase.getDatabase(SearchActivity.this).searchDao();
+                searchHistories = searchDao.getAll();
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Log.d("Search History List", searchHistories.size() + "");
+                        adapter = new SearchTermAdapter(SearchActivity.this, searchHistories);
+                        Log.d("Adapter", adapter.toString());
+                        rcNearest.setAdapter(adapter);
+                        rcNearest.setLayoutManager(new LinearLayoutManager(SearchActivity.this));
+                    }
+                });
+            }
+        }).start();
     }
 }
